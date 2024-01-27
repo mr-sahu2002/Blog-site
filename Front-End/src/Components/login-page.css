@@ -11,7 +11,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('./assets/backimg.jpg') no-repeat;
+    background: url('../assets/backimg.jpg') no-repeat;
     background-size: cover;
     background-position: center;
 }
@@ -80,7 +80,7 @@ body{
     margin: 20px 0 15px;
 }
 
-.signup-link p, a{
+.signup-link .signup-a{
     color: #fff;
     text-decoration: none;
     font-weight: 600;

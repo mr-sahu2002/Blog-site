@@ -1,4 +1,5 @@
 import "./login-page.css"
+import {Link} from "react-router-dom"
 
 function Loginpage(){
     return(
@@ -14,7 +15,7 @@ function Loginpage(){
                 <button className="submit-btn" type="submit">Login</button>
             </div>  
             <div className="signup-link">
-                <label>Don't have an account? </label><a href="#">Sign Up</a>
+                <label>Don't have an account? </label><Link to = "/SignUP" className="signup-a">Sign Up</Link>
             </div>
         </div>
     )
