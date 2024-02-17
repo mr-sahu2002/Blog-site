@@ -5,10 +5,10 @@ $lightGreen: #b9e7e7;
   justify-content: center;
   .container {
     width: 1024px;
-
     .link {
       text-decoration: none;
       color: inherit;
+      font-family: "Lora", sans-serif;
     }
     .navbar {
         .container {
@@ -43,6 +43,7 @@ $lightGreen: #b9e7e7;
   
             .write {
               background-color: $lightGreen;
+              padding: 30px;
               width: 50px;
               height: 50px;
               border-radius: 50%;
@@ -72,6 +73,9 @@ $lightGreen: #b9e7e7;
         align-items: center;
         justify-content: space-between;
         font-size: 12px;
+        span{
+          font-family: "Lora", sans-serif;
+        }
         img {
           height: 50px;
           border-radius: 50%;
@@ -121,15 +125,17 @@ $lightGreen: #b9e7e7;
               flex: 3;
               display: flex;
               flex-direction: column;
-              justify-content: space-between;
+              gap: 50px;
   
               h1 {
+                margin-top: 25px;
                 font-size: 45px;
-                font-family: "Protest Riot", sans-serif;
+                font-family: "Lora", sans-serif;
               }
   
               p {
                 font-size: 18px;
+                font-family: "Lora", sans-serif;
               }
   
               button {
@@ -201,11 +207,13 @@ $lightGreen: #b9e7e7;
           h1 {
             font-size: 42px;
             color: #333;
+            font-family: "Lora", sans-serif;
           }
   
           p {
             text-align: justify;
             line-height: 30px;
+            font-family: "Lora", sans-serif;
           }
         }
         .menu {
@@ -215,8 +223,9 @@ $lightGreen: #b9e7e7;
           gap: 25px;
   
           h1 {
-            font-size: 20px;
+            font-size: 30px;
             color: #555;
+            font-family: "Lora", sans-serif;
           }
   
           .post {
@@ -232,6 +241,7 @@ $lightGreen: #b9e7e7;
   
             h2 {
               color: #555;
+              font-family: "Lora", sans-serif;
             }
   
             button {
@@ -257,8 +267,6 @@ $lightGreen: #b9e7e7;
   
       .add {
         margin-top: 20px;
-        display: flex;
-        gap: 20px;
   
         .content {
           flex: 5;
@@ -273,7 +281,7 @@ $lightGreen: #b9e7e7;
   
           .editorContainer {
             height: 300px;
-            max-width: 715px;
+            max-width: 1023px;
   
             .editor {
               height: 100%;
@@ -287,6 +295,7 @@ $lightGreen: #b9e7e7;
           display: flex;
           flex-direction: column;
           gap: 20px;
+          margin-top: 60px;
   
           .item {
             border: 1px solid lightgray;
@@ -296,10 +305,12 @@ $lightGreen: #b9e7e7;
             flex-direction: column;
             justify-content: space-between;
             font-size: 12px;
+            gap: 6px;
             color: #555;
   
             h1{
               font-size: 20px;
+              font-family: "Lora", sans-serif;
             }
   
             .file{
@@ -307,39 +318,25 @@ $lightGreen: #b9e7e7;
               cursor: pointer;
             }
   
-            .buttons{
-              display: flex;
-              justify-content: space-between;
-  
-              :first-child{
-                cursor: pointer;
-                color: teal;
-                background-color: white;
-                border: 1px solid teal;
-                padding: 7px;
-
-                &:active{
-                  background-color: hsl(0, 0, 90%);
-                }
-              }
-              :last-child{
-                cursor: pointer;
-                color: white;
-                background-color: teal;
-                border: 1px solid hsl(180, 100%, 25%);
-                padding: 3px 5px;
-
-                &:active{
-                  background-color: hsl(180, 100%, 15%);
-                }
-              }
-            }
-  
             .cat{
               display: flex;
               align-items: center;
-              gap: 2px;
+              gap: 4px;
               color: teal;
+            }
+          }
+
+          button{
+            cursor: pointer;
+            color: white;
+            background-color: teal;
+            border: 1px solid hsl(180, 100%, 25%);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: "Lora", sans-serif;
+
+            &:active{
+              background-color: hsl(180, 100%, 15%);
             }
           }
         }
