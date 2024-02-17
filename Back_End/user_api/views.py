@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework import generics
 
-from .models import BlogPost
+from .models import BlogPost,Image,Rating
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, BlogPostSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer,ImageSerializer, RatePostSerializer
 from .validations import custom_validation, validate_email, validate_password
 
 
@@ -53,10 +53,25 @@ class UserView(APIView):
 	##
 	def get(self, request):
 		serializer = UserSerializer(request.user)
-		print(serializer.data)
+		# print(serializer.data)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
 class BlogPostCreateView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
-	queryset = BlogPost.objects.all()
+	# queryset = BlogPost.objects.all()
 	serializer_class = BlogPostSerializer
+
+	def perform_create(self, serializer):
+        # Access the authenticated user's username
+		username = self.request.user.username
+		author_instance = get_user_model().objects.get(username=username)
+		blog_post=serializer.save(author=author_instance)
+
+		# Handle multiple images
+		images_data = self.request.FILES.getlist('images')  # 'images' should match the field name in your form
+		for image_data in images_data:
+			Image.objects.create(image=image_data, uploaded_by=author_instance, blog_posts=blog_post)
+
+class RatePostView(generics.CreateAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	serializer_class = RatePostSerializer

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from PIL import Image
 
 class AppUserManager(BaseUserManager):
 	def create_user(self, email, password=None,**extra_fields):
@@ -23,7 +24,6 @@ class AppUserManager(BaseUserManager):
 		user.is_admin=True
 		user.save()
 		return user
-
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
@@ -56,12 +56,50 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		"Is the user a member of staff?"
 		# Simplest possible answer: All admins are staff
 		return self.is_admin
+	
+class Category(models.Model):
+	cat_id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=100)
+	tags = models.TextField()
+
+	def __str__(self):
+		return self.name
+	
+class Image(models.Model):
+	image_id=models.AutoField(primary_key=True)
+	image = models.ImageField(upload_to='posts/',default="")
+	uploaded_by = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	uploaded_at = models.DateTimeField(auto_now_add=True)
 
 class BlogPost(models.Model):
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+	post_id= models.AutoField(primary_key=True)
+	author= models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	title = models.CharField(max_length=255)
+	content = models.TextField()
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+	Cat=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+	images = models.ManyToManyField(Image, related_name='blog_posts')
+	# images = models.ForeignKey(Image,on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title
+	def __str__(self):
+		return self.title
+
+class Rating(models.Model):
+	rate_id = models.AutoField(primary_key=True)
+	post = models.ForeignKey(BlogPost,on_delete=models.CASCADE)
+	reader = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	like = models.BooleanField()
+	comment = models.TextField()
+
+	def __str__(self):
+		return self.post,self.reader
+
+# class Analytics(models.Model):
+# 	analysis_id = models.AutoField(primary_key=True)
+# 	post=models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+# 	reader_count = models.IntegerField()
+# 	timestamp = models.TimeField()
+
+# 	def __str__(self):
+# 		return self.analysis_id

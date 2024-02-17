@@ -1,7 +1,7 @@
 from django.forms import ValidationError
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
-from .models import BlogPost
+from .models import BlogPost, Image, Rating, Category
 
 UserModel = get_user_model()
 
@@ -30,7 +30,19 @@ class UserSerializer(serializers.ModelSerializer):
 		model = UserModel
 		fields = ('email', 'username')
 
-class BlogPostSerializer(serializers.ModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BlogPost
-        fields = ['id', 'title', 'content', 'created_at', 'updated_at']
+        model = Image
+        fields = ['id', 'image', 'uploaded_by', 'uploaded_at']
+
+class BlogPostSerializer(serializers.ModelSerializer):
+	images = ImageSerializer(many=True, read_only=True)
+	class Meta:
+		model = BlogPost
+		fields = ['post_id','author','Cat','title', 'content', 'created_at', 'updated_at','images']
+
+class RatePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ['rate_id', 'post', 'reader', 'like','comment']
+
