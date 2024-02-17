@@ -5,26 +5,33 @@ import 'react-quill/dist/quill.snow.css';
 function Write(){
     const [value, setValue] = useState('');
 
+    const modules = {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        ['blockquote', 'code-block','image'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'color': [] }],
+        [{ 'font': ['Times-New-Ro'] }],
+        [{ 'align': [] }],
+        ['clean'],
+      ],
+    };
+
     return (
         <div className="add">
           <div className="content">
             <input type="text" placeholder="Title"/>
             <div className="editorContainer">
-                <ReactQuill className="editor" theme="snow" value={value} onChange={setValue} />
+                <ReactQuill className="editor" theme="snow" value={value} onChange={setValue} modules={modules} />
             </div>
           </div>
 
           <div className="menu">
-            <div className="item">
-            <h1>Publish</h1>
-              <input style={{ display: "none" }} type="file" id="file" name=""/>
-              <label className="file" htmlFor="file">Upload Image</label>
-
-              <div className="buttons">
-                <button>Save as a draft</button>
-                <button>Publish</button>
-              </div>
-            </div>
 
             <div className="item">
               <h1>Category</h1>
@@ -58,7 +65,11 @@ function Write(){
                 <label htmlFor="food">Food</label>
               </div>
             </div>
-          </div>
+            
+            <div className="buttons">
+                <button>Publish</button>
+            </div>
+          </div>    
         </div>
     );
 };
