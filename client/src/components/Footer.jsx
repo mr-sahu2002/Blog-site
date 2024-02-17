@@ -1,11 +1,16 @@
 import React from "react"
+import "../style.scss"
+import Logo from "../assets/logo.png";
 
 function Footer(){
-    return(
-        <div>
-        Footer
-        </div>
-    )
-}
+    return (
+        <footer>
+          <img src={Logo} alt="" />
+          <span>
+            Made By Kushal.
+          </span>
+        </footer>
+    );
+};
 
 export default Footer
