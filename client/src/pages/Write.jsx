@@ -28,6 +28,7 @@ function Write(){
             <input type="text" placeholder="Title"/>
             <div className="editorContainer">
                 <ReactQuill className="editor" theme="snow" value={value} onChange={setValue} modules={modules} />
+                {console.log(value)}
             </div>
           </div>
 

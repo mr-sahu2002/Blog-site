@@ -6,6 +6,13 @@ import  {Link} from "react-router-dom"
 import "../style.scss"
 
 function Single(){
+    const [comment,setComment] = useState("");
+
+    const handleCancel = () => {
+        setComment("")
+    }
+    const handleSubmit = () => {}
+
     return(
         <div className="single">
             <div className="content">
@@ -31,7 +38,12 @@ function Single(){
                     <br />
                     <br />
                     Porro rerum dicta accusamus alias nemo necessitatibus at quibusdam, eaque labore asperiores est obcaecati expedita, id aliquam sint ut quam facere et laborum repellat eveniet unde esse exercitationem. Eligendi, quod.
-                </p>      
+                </p>
+                <div className="comment-area">
+                    <input className="comment-inp" type="textarea" placeholder="leave a comment" onChange={(e) => setComment(e.target.value)} value={comment}></input>
+                    <button className="btn-cancel" onClick={handleCancel}>Cancel</button>
+                    <button className="btn-submit" onClick={handleSubmit}>Submit</button>
+                </div>      
             </div>
         <Menu />
     </div>

@@ -80,7 +80,7 @@ function Register() {
                 required
               />
               <i className="bx bxs-lock-alt regi-icon3"></i>
-              {error && <p style={{ color: "#000000" }}>{error}</p>}
+              {error && <p style={{ color: "red" }}>{error}</p>}
               <button type="submit">Create User</button>
               <div className="linkto">
                 <label>Already have an account? </label>
