@@ -15,7 +15,7 @@ function Login() {
     client
       .get("/api/user")
       .then(function (res) {
-        console.log(res.data);
+        console.log(res.data.user.id);
         setCurrentUser(true);
       })
       .catch(function (error) {

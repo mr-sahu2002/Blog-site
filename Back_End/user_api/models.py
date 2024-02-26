@@ -58,8 +58,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		return self.is_admin
 	
 class Category(models.Model):
-	cat_id = models.AutoField(primary_key=True)
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, primary_key=True)
 	tags = models.TextField()
 
 	def __str__(self):
@@ -78,7 +77,7 @@ class BlogPost(models.Model):
 	content = models.TextField()
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
-	Cat=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+	cat=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
 	images = models.ManyToManyField(Image, related_name='blog_posts')
 	# images = models.ForeignKey(Image,on_delete=models.CASCADE)
 

@@ -7,5 +7,7 @@ urlpatterns = [
 	path('logout', views.UserLogout.as_view(), name='logout'),
 	path('user', views.UserView.as_view(), name='user'),
     path('create', views.BlogPostCreateView.as_view(),name='blog'),
-    path('rate', views.RatePostView.as_view(),name='rate')
+    path('rate', views.RatePostView.as_view(),name='rate'),
+    path('posts/', views.AllPostListView.as_view(), name='post-list'),
+    path('posts/<int:post_id>/', views.PostListView.as_view(), name='post-detail'),
 ]

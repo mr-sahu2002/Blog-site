@@ -8,7 +8,7 @@ from rest_framework import generics
 
 from .models import BlogPost,Image,Rating
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer,ImageSerializer, RatePostSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer, RatePostSerializer
 from .validations import custom_validation, validate_email, validate_password
 
 
@@ -58,6 +58,7 @@ class UserView(APIView):
 
 class BlogPostCreateView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
 	# queryset = BlogPost.objects.all()
 	serializer_class = BlogPostSerializer
 
@@ -72,6 +73,20 @@ class BlogPostCreateView(generics.CreateAPIView):
 		for image_data in images_data:
 			Image.objects.create(image=image_data, uploaded_by=author_instance, blog_posts=blog_post)
 
+class AllPostListView(generics.ListAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	queryset = BlogPost.objects.all()
+	serializer_class = BlogPostSerializer
+
+class PostListView(generics.RetrieveAPIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	queryset = BlogPost.objects.all()
+	serializer_class = BlogPostSerializer
+	lookup_field = 'post_id'
+
 class RatePostView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	serializer_class = RatePostSerializer
+
