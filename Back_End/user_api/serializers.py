@@ -41,6 +41,12 @@ class BlogPostSerializer(serializers.ModelSerializer):
 		model = BlogPost
 		fields = ['post_id','author','cat','title', 'content', 'created_at', 'updated_at','images']
 
+	def to_representation(self, instance):
+		representation = super().to_representation(instance)
+		author_representation = UserSerializer(instance.author).data
+		representation['author'] = author_representation.get('username', '')
+		return representation
+
 class RatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating

@@ -1,11 +1,72 @@
 import React, { useEffect, useState } from "react";
-// import Edit from "../assets/edit.png";
-// import Delete from "../assets/delete.png";
+import Edit from "../assets/edit.png";
+import Delete from "../assets/delete.png";
 import Menu from "../components/Menu";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../style.scss";
+import client, { headers } from "./axios-config";
+import Cookies from "js-cookie";
+import moment from "moment";
+
+function createHeaders() {
+  const token = Cookies.get("csrftoken");
+  return {
+    "X-CSRFToken": token,
+    "Content-Type": "application/json",
+  };
+}
 
 function Single() {
+  const [comment, setComment] = useState("");
+  const [currentUser, setCurrentUser] = useState();
+  const [post, setPost] = useState({});
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const postId = location.pathname.split("/")[2];
+
+  useEffect(() => {
+    client
+      .get("/api/user")
+      .then(function (res) {
+        setCurrentUser(res.data.user.username);
+      })
+      .catch(function (error) {
+        setCurrentUser(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await client.get(`api/posts/${postId}`);
+        setPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [postId]);
+
+  const handleDelete = async () => {
+    try {
+      if (post.author === "kushal") {
+        await client.delete(`api/posts/${postId}`, {
+          headers: createHeaders(),
+        });
+        navigate("/");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleCancel = () => {
+    setComment("");
+  };
+  const handleSubmit = () => {};
+
   return (
     <div className="single">
       <div className="content">
@@ -19,17 +80,17 @@ function Single() {
             alt=""
           />
           <div className="info">
-            <span>Sahu</span>
-            <p>Posted 5 days ago</p>
+            <span>{post.author}</span>
+            <p>{moment(post.created_at).fromNow()}</p>
           </div>
-          {/* <div className="edit">
-                <Link to={`/write?edit=2`}>
-                    <img src={Edit} alt="" />
-                </Link>
-                <img src={Delete} alt="" />
-                </div> */}
+          <div className="edit">
+            <Link to={`/write?edit=2`} state={post}>
+              <img src={Edit} alt="" />
+            </Link>
+            <img onClick={handleDelete} src={Delete} alt="" />
+          </div>
         </div>
-        <h1>gvsiugiaij bocihoi ahdojanx ohco janxoajxoi</h1>
+        <h1>{post.title}</h1>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
           assumenda voluptas molestiae a exercitationem nisi quae consequuntur
@@ -48,6 +109,22 @@ function Single() {
           quam facere et laborum repellat eveniet unde esse exercitationem.
           Eligendi, quod.
         </p>
+
+        <div className="comment-area">
+          <input
+            className="comment-inp"
+            type="textarea"
+            placeholder="leave a comment"
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          ></input>
+          <button className="btn-cancel" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button className="btn-submit" onClick={handleSubmit}>
+            Submit
+          </button>
+        </div>
       </div>
       <Menu />
     </div>

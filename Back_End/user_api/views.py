@@ -73,19 +73,28 @@ class BlogPostCreateView(generics.CreateAPIView):
 		for image_data in images_data:
 			Image.objects.create(image=image_data, uploaded_by=author_instance, blog_posts=blog_post)
 
-class AllPostListView(generics.ListAPIView):
-	permission_classes = (permissions.IsAuthenticated,)
-	authentication_classes = (SessionAuthentication,)
-	queryset = BlogPost.objects.all()
+class BlogPostListView(generics.ListAPIView):
+	permission_classes = (permissions.AllowAny,)
 	serializer_class = BlogPostSerializer
 
+	def get_queryset(self):
+		cat = self.request.query_params.get('cat', None)
+		if cat:
+			return BlogPost.objects.filter(cat=cat)
+		else:
+			return BlogPost.objects.all()
+
 class PostListView(generics.RetrieveAPIView):
-	permission_classes = (permissions.IsAuthenticated,)
-	authentication_classes = (SessionAuthentication,)
+	permission_classes = (permissions.AllowAny,)
 	queryset = BlogPost.objects.all()
 	serializer_class = BlogPostSerializer
 	lookup_field = 'post_id'
 
+# class AllPostListView(generics.ListAPIView):
+# 	permission_classes = (permissions.AllowAny,)
+# 	queryset = BlogPost.objects.all()
+# 	serializer_class = BlogPostSerializer
+		
 class RatePostView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	serializer_class = RatePostSerializer

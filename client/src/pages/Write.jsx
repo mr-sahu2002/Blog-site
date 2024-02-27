@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
-import Cookies from "js-cookie";
 import client from "./axios-config";
+import Cookies from "js-cookie";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react";
 
-Quill.register("modules/imageResize", ImageResize);
+function createHeaders() {
+  const token = Cookies.get("csrftoken");
+  return {
+    "X-CSRFToken": token,
+    "Content-Type": "application/json",
+  };
+}
 
-const token = Cookies.get("csrftoken"); // Replace with the actual CSRF token
-const headers = {
-  "X-CSRFToken": token,
-  "Content-Type": "application/json",
-};
+Quill.register("modules/imageResize", ImageResize);
 
 function Write() {
   const [currentUser, setCurrentUser] = useState();
@@ -46,11 +48,11 @@ function Write() {
             `/api/create/${state.id}`,
             {
               author: username,
-              title,
+              title: title,
               content: value,
               cat: cat,
             },
-            { headers }
+            { headers: createHeaders() }
           )
         : await client.post(
             `/api/create`,
@@ -61,7 +63,7 @@ function Write() {
               cat: cat,
               // date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
             },
-            { headers }
+            { headers: createHeaders() }
           );
       navigate("/");
     } catch (error) {
