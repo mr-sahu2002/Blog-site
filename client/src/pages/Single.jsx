@@ -51,7 +51,7 @@ function Single() {
 
   const handleDelete = async () => {
     try {
-      if (post.author === "kushal") {
+      if (post.author === currentUser) {
         await client.delete(`api/posts/${postId}`, {
           headers: createHeaders(),
         });
@@ -83,11 +83,17 @@ function Single() {
             <span>{post.author}</span>
             <p>{moment(post.created_at).fromNow()}</p>
           </div>
+
           <div className="edit">
-            <Link to={`/write?edit=2`} state={post}>
-              <img src={Edit} alt="" />
-            </Link>
-            <img onClick={handleDelete} src={Delete} alt="" />
+            {post.author === currentUser ? (
+              <Link to={`/write?edit=2`} state={post}>
+                <img src={Edit} alt="Edit" />
+              </Link>
+            ) : null}
+
+            {post.author === currentUser ? (
+              <img onClick={handleDelete} src={Delete} alt="Delete" />
+            ) : null}
           </div>
         </div>
         <h1>{post.title}</h1>

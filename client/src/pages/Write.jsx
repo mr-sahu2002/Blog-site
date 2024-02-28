@@ -20,8 +20,8 @@ function Write() {
   const [currentUser, setCurrentUser] = useState();
   const state = useLocation().state;
   const [username, setUsername] = useState("");
-  const [value, setValue] = useState(state?.title || "");
-  const [title, setTitle] = useState(state?.desc || "");
+  const [value, setValue] = useState(state?.content || "");
+  const [title, setTitle] = useState(state?.title || "");
   const [cat, setCat] = useState(state?.cat || "");
 
   const navigate = useNavigate();
@@ -45,12 +45,12 @@ function Write() {
     try {
       state
         ? await client.put(
-            `/api/create/${state.id}`,
+            `/api/create/${state.post_id}`,
             {
               author: username,
-              title: title,
+              title,
               content: value,
-              cat: cat,
+              cat,
             },
             { headers: createHeaders() }
           )
@@ -67,6 +67,8 @@ function Write() {
           );
       navigate("/");
     } catch (error) {
+      console.log(state);
+      console.log(state.post_id);
       console.log(error);
     }
   };
@@ -103,6 +105,7 @@ function Write() {
           <input
             type="text"
             placeholder="Title"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <div className="editorContainer" style={{ height: "400px" }}>

@@ -56,7 +56,7 @@ class UserView(APIView):
 		# print(serializer.data)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
-class BlogPostCreateView(generics.CreateAPIView):
+class BlogPostCreateView(generics.CreateAPIView,generics.UpdateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 	# queryset = BlogPost.objects.all()
@@ -73,6 +73,18 @@ class BlogPostCreateView(generics.CreateAPIView):
 		for image_data in images_data:
 			Image.objects.create(image=image_data, uploaded_by=author_instance, blog_posts=blog_post)
 
+class BlogPostUpdateView(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+
+    def perform_update(self, serializer):
+        # Access the authenticated user's username
+        username = self.request.user.username
+        author_instance = get_user_model().objects.get(username=username)
+        serializer.save(author=author_instance)
+
 class BlogPostListView(generics.ListAPIView):
 	permission_classes = (permissions.AllowAny,)
 	serializer_class = BlogPostSerializer
@@ -84,7 +96,7 @@ class BlogPostListView(generics.ListAPIView):
 		else:
 			return BlogPost.objects.all()
 
-class PostListView(generics.RetrieveAPIView):
+class PostListView(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = (permissions.AllowAny,)
 	queryset = BlogPost.objects.all()
 	serializer_class = BlogPostSerializer
