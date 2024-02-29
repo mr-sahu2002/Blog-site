@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('create', views.BlogPostCreateView.as_view(),name='blog'),
     path('create/<int:pk>', views.BlogPostUpdateView.as_view(),name='blog'),
+    path('upload',views.ImageUploadView.as_view(),name="upload-image"),
     
     path('posts/', views.BlogPostListView.as_view(), name='post-detail'),
     path('posts/<int:post_id>/', views.PostListView.as_view(), name='post-detail'),

@@ -33,10 +33,10 @@ class UserSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'image', 'uploaded_by', 'uploaded_at']
+        fields = ['image_id', 'image']
 
 class BlogPostSerializer(serializers.ModelSerializer):
-	images = ImageSerializer(many=True, read_only=True)
+	# images = ImageSerializer(many=True, read_only=True)
 	class Meta:
 		model = BlogPost
 		fields = ['post_id','author','cat','title', 'content', 'created_at', 'updated_at','images']

@@ -22,6 +22,7 @@ function Write() {
   const [username, setUsername] = useState("");
   const [value, setValue] = useState(state?.content || "");
   const [title, setTitle] = useState(state?.title || "");
+  const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
 
   const navigate = useNavigate();
@@ -39,8 +40,22 @@ function Write() {
       });
   }, []);
 
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await client.post("api/upload", formData, {
+        headers: createHeaders(),
+      });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const post = async (e) => {
     e.preventDefault();
+    const imgUrl = await upload();
 
     try {
       state
@@ -51,6 +66,7 @@ function Write() {
               title,
               content: value,
               cat,
+              images: file ? imgUrl : "",
             },
             { headers: createHeaders() }
           )
@@ -61,14 +77,13 @@ function Write() {
               title: title,
               content: value,
               cat: cat,
-              // date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+              images: file ? imgUrl.image_id : "",
             },
             { headers: createHeaders() }
           );
       navigate("/");
     } catch (error) {
-      console.log(state);
-      console.log(state.post_id);
+      console.log(imgUrl.image_id);
       console.log(error);
     }
   };
@@ -128,6 +143,17 @@ function Write() {
             <span>
               <b>Visibility: </b> Public
             </span>
+
+            <input
+              style={{ display: "none" }}
+              type="file"
+              id="file"
+              name=""
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+            <label className="file" htmlFor="file">
+              Upload Image
+            </label>
 
             <div className="buttons">
               <button>Save as a draft</button>

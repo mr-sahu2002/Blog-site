@@ -67,8 +67,8 @@ class Category(models.Model):
 class Image(models.Model):
 	image_id=models.AutoField(primary_key=True)
 	image = models.ImageField(upload_to='posts/',default="")
-	uploaded_by = models.ForeignKey(AppUser, on_delete=models.CASCADE)
-	uploaded_at = models.DateTimeField(auto_now_add=True)
+	# uploaded_by = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	# uploaded_at = models.DateTimeField(auto_now_add=True)
 
 class BlogPost(models.Model):
 	post_id= models.AutoField(primary_key=True)
@@ -78,8 +78,8 @@ class BlogPost(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	cat=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-	images = models.ManyToManyField(Image, related_name='blog_posts')
-	# images = models.ForeignKey(Image,on_delete=models.CASCADE)
+	images = models.ForeignKey(Image,on_delete=models.CASCADE, related_name='post_image',null=True)
+	# images = models.ManyToManyField(Image, related_name='blog_posts')
 
 	def __str__(self):
 		return self.title

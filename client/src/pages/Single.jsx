@@ -7,6 +7,9 @@ import "../style.scss";
 import client, { headers } from "./axios-config";
 import Cookies from "js-cookie";
 import moment from "moment";
+// import ReactQuill, { Quill } from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import ImageResize from "quill-image-resize-module-react";
 
 function createHeaders() {
   const token = Cookies.get("csrftoken");
@@ -70,10 +73,7 @@ function Single() {
   return (
     <div className="single">
       <div className="content">
-        <img
-          src="https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-        />
+        <img src={`..api/upload/${post?.image_id}`} alt="" />
         <div className="user">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYxsG3Ac8-CCLG3PzEvZXAfVoQxmjHleJqjg&usqp=CAU"
@@ -97,25 +97,11 @@ function Single() {
           </div>
         </div>
         <h1>{post.title}</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
-          assumenda voluptas molestiae a exercitationem nisi quae consequuntur
-          dolorem ullam aut ex sint perferendis repellat corrupti amet,
-          cupiditate fugiat cumque tempora.
-          <br />
-          <br />
-          Blanditiis esse amet beatae debitis iusto cum cumque voluptatum quo
-          eos impedit. Facilis tempora perferendis illo fugiat laborum. Enim
-          fuga voluptas neque, dicta aliquam nostrum cumque aliquid reiciendis
-          quibusdam minima?
-          <br />
-          <br />
-          Porro rerum dicta accusamus alias nemo necessitatibus at quibusdam,
-          eaque labore asperiores est obcaecati expedita, id aliquam sint ut
-          quam facere et laborum repellat eveniet unde esse exercitationem.
-          Eligendi, quod.
-        </p>
-
+        <div
+          className="ql-editor"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+        {/* <ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> */}
         <div className="comment-area">
           <input
             className="comment-inp"

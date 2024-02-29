@@ -8,7 +8,7 @@ from rest_framework import generics
 
 from .models import BlogPost,Image,Rating
 
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer, RatePostSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer, RatePostSerializer, ImageSerializer
 from .validations import custom_validation, validate_email, validate_password
 
 
@@ -56,7 +56,7 @@ class UserView(APIView):
 		# print(serializer.data)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
-class BlogPostCreateView(generics.CreateAPIView,generics.UpdateAPIView):
+class BlogPostCreateView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 	# queryset = BlogPost.objects.all()
@@ -68,10 +68,12 @@ class BlogPostCreateView(generics.CreateAPIView,generics.UpdateAPIView):
 		author_instance = get_user_model().objects.get(username=username)
 		blog_post=serializer.save(author=author_instance)
 
-		# Handle multiple images
-		images_data = self.request.FILES.getlist('images')  # 'images' should match the field name in your form
-		for image_data in images_data:
-			Image.objects.create(image=image_data, uploaded_by=author_instance, blog_posts=blog_post)
+		image_data = self.request.FILES.get('image')
+		if image_data:
+			response = ImageUploadView.as_view()(self.request)
+			image_instance_id = response.data.get('image_id')
+			if image_instance_id:
+				blog_post.images.add(image_instance_id)
 
 class BlogPostUpdateView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -102,6 +104,14 @@ class PostListView(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = BlogPostSerializer
 	lookup_field = 'post_id'
 
+class ImageUploadView(generics.CreateAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+		
 # class AllPostListView(generics.ListAPIView):
 # 	permission_classes = (permissions.AllowAny,)
 # 	queryset = BlogPost.objects.all()
