@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, status
 from rest_framework import generics
 
@@ -111,13 +112,12 @@ class ImageUploadView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
-		
-# class AllPostListView(generics.ListAPIView):
-# 	permission_classes = (permissions.AllowAny,)
-# 	queryset = BlogPost.objects.all()
-# 	serializer_class = BlogPostSerializer
-		
+				
 class RatePostView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	serializer_class = RatePostSerializer
 
+# class AllPostListView(generics.ListAPIView):
+# 	permission_classes = (permissions.AllowAny,)
+# 	queryset = BlogPost.objects.all()
+# 	serializer_class = BlogPostSerializer

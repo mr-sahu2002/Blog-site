@@ -47,6 +47,7 @@ function Write() {
       const res = await client.post("api/upload", formData, {
         headers: createHeaders(),
       });
+      console.log(res.data);
       return res.data;
     } catch (err) {
       console.log(err);
@@ -66,7 +67,7 @@ function Write() {
               title,
               content: value,
               cat,
-              images: file ? imgUrl : "",
+              images: file ? imgUrl.image_id : "",
             },
             { headers: createHeaders() }
           )
@@ -77,13 +78,14 @@ function Write() {
               title: title,
               content: value,
               cat: cat,
-              images: file ? imgUrl.image_id : "",
+              images: file ? imgUrl : "",
             },
             { headers: createHeaders() }
           );
       navigate("/");
     } catch (error) {
-      console.log(imgUrl.image_id);
+      console.log(file);
+      console.log(imgUrl);
       console.log(error);
     }
   };
