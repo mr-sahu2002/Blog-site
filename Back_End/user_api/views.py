@@ -1,11 +1,16 @@
 from django.contrib.auth import get_user_model, login, logout
 
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, status
 from rest_framework import generics
+from rest_framework.parsers import MultiPartParser, FormParser
+# from django.conf import settings
+# from django.core.files.base import ContentFile
 
 from .models import BlogPost,Image,Rating
 
@@ -69,12 +74,6 @@ class BlogPostCreateView(generics.CreateAPIView):
 		author_instance = get_user_model().objects.get(username=username)
 		blog_post=serializer.save(author=author_instance)
 
-		image_data = self.request.FILES.get('image')
-		if image_data:
-			response = ImageUploadView.as_view()(self.request)
-			image_instance_id = response.data.get('image_id')
-			if image_instance_id:
-				blog_post.images.add(image_instance_id)
 
 class BlogPostUpdateView(generics.UpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -105,13 +104,34 @@ class PostListView(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = BlogPostSerializer
 	lookup_field = 'post_id'
 
-class ImageUploadView(generics.CreateAPIView):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+class ImageUploadView(APIView):
+	permission_classes = (permissions.AllowAny,)
+	parser_classes = (MultiPartParser, FormParser)
 
-    def perform_create(self, serializer):
-        serializer.save()
+	def get(self, request, *args, **kwargs):
+		posts = Image.objects.all()
+		serializer = ImageSerializer(posts, many=True)
+		return Response(serializer.data)
+
+	def post(self, request, *args, **kwargs):
+		posts_serializer = ImageSerializer(data=request.data)
+		if posts_serializer.is_valid():
+			posts_serializer.save()
+			return Response(posts_serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			print('error', posts_serializer.errors)
+			return Response(posts_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetImageView(APIView):
+    def get(self, request, image_id):
+        # Retrieve the YourModel instance based on image_id
+        your_model_instance = get_object_or_404(Image, pk=image_id)
+
+        # Assuming the YourModel instance has an 'image' field (ImageField)
+        image_url = your_model_instance.image.url
+
+        # Return the image URL in the response
+        return JsonResponse({'url': image_url})
 				
 class RatePostView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)

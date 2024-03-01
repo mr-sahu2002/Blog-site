@@ -14,18 +14,30 @@ function createHeaders() {
   };
 }
 
+function createHeadersImage() {
+  const token = Cookies.get("csrftoken");
+  return {
+    "X-CSRFToken": token,
+    "content-type": "multipart/form-data",
+  };
+}
+
 Quill.register("modules/imageResize", ImageResize);
 
 function Write() {
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState();
   const state = useLocation().state;
   const [username, setUsername] = useState("");
   const [value, setValue] = useState(state?.content || "");
   const [title, setTitle] = useState(state?.title || "");
-  const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
+  const [imageID, setID] = useState();
 
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: "",
+    image: null,
+  });
 
   useEffect(() => {
     client
@@ -40,23 +52,43 @@ function Write() {
       });
   }, []);
 
-  const upload = async () => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleImageChange = (e) => {
+    setFormData({
+      ...formData,
+      image: e.target.files[0],
+    });
+  };
+
+  const upload = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    const form_data = new FormData();
+    form_data.append("image", formData.image, formData.image.name);
+    form_data.append("title", formData.title);
+
+    const url = "api/upload";
+
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await client.post("api/upload", formData, {
-        headers: createHeaders(),
+      const response = await client.post(url, form_data, {
+        headers: createHeadersImage(),
       });
-      console.log(res.data);
-      return res.data;
-    } catch (err) {
-      console.log(err);
+      setID(response.data.image_id);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const post = async (e) => {
     e.preventDefault();
-    const imgUrl = await upload();
 
     try {
       state
@@ -67,7 +99,7 @@ function Write() {
               title,
               content: value,
               cat,
-              images: file ? imgUrl.image_id : "",
+              images: formData.image ? imageID : "",
             },
             { headers: createHeaders() }
           )
@@ -78,14 +110,12 @@ function Write() {
               title: title,
               content: value,
               cat: cat,
-              images: file ? imgUrl : "",
+              images: formData.image ? imageID : "",
             },
             { headers: createHeaders() }
           );
       navigate("/");
     } catch (error) {
-      console.log(file);
-      console.log(imgUrl);
       console.log(error);
     }
   };
@@ -146,16 +176,28 @@ function Write() {
               <b>Visibility: </b> Public
             </span>
 
-            <input
-              style={{ display: "none" }}
-              type="file"
-              id="file"
-              name=""
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <label className="file" htmlFor="file">
-              Upload Image
-            </label>
+            <form onSubmit={upload}>
+              <p>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/png, image/jpeg"
+                  onChange={handleImageChange}
+                  required
+                />
+              </p>
+              <p>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  id="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
+              </p>
+              <input type="submit" value="upload" />
+            </form>
 
             <div className="buttons">
               <button>Save as a draft</button>
@@ -163,6 +205,7 @@ function Write() {
               <button onClick={post}>Publish</button>
             </div>
           </div>
+
           <div className="item">
             <h1>Category</h1>
             <div className="cat">

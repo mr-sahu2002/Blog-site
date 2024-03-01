@@ -63,7 +63,9 @@ function Navbar() {
             <h6>FOOD</h6>
           </Link>
 
-          <span>{username}</span>
+          <Link to="/profile" className="userId">
+            <span>{username}</span>
+          </Link>
           <span>
             <form onSubmit={(e) => submitLogout(e)}>
               <button type="submit" className="log" variant="light">
@@ -73,7 +75,7 @@ function Navbar() {
           </span>
 
           <span className="write">
-            <Link className="link" to="/write">
+            <Link className="linkWrite" to="/write">
               Write
             </Link>
           </span>

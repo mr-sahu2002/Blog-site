@@ -44,7 +44,18 @@ function Single() {
     const fetchData = async () => {
       try {
         const res = await client.get(`api/posts/${postId}`);
-        setPost(res.data);
+        const postData = res.data;
+
+        // Assuming postData has an 'images' property representing the image_id
+        const imageId = postData.images;
+
+        // Fetch image URL based on image_id
+        const imageRes = await client.get(`/api/get_image_url/${imageId}`);
+        const imageUrl = imageRes.data.url;
+
+        // Add imageUrl to postData
+        postData.images = imageUrl;
+        setPost(postData);
       } catch (err) {
         console.log(err);
       }
@@ -73,7 +84,7 @@ function Single() {
   return (
     <div className="single">
       <div className="content">
-        <img src={`..api/upload/${post?.image_id}`} alt="" />
+        <img src={`http://127.0.0.1:8000${post.images}`} alt="" />
         <div className="user">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYxsG3Ac8-CCLG3PzEvZXAfVoQxmjHleJqjg&usqp=CAU"
@@ -96,7 +107,9 @@ function Single() {
             ) : null}
           </div>
         </div>
-        <h1>{post.title}</h1>
+        <div className="post-title">
+          <h1>{post.title}</h1>
+        </div>
         <div
           className="ql-editor"
           dangerouslySetInnerHTML={{ __html: post.content }}

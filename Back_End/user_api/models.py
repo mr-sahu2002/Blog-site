@@ -66,9 +66,12 @@ class Category(models.Model):
 	
 class Image(models.Model):
 	image_id=models.AutoField(primary_key=True)
+	title = models.CharField(max_length=100, null=True)
 	image = models.ImageField(upload_to='posts/',default="")
 	# uploaded_by = models.ForeignKey(AppUser, on_delete=models.CASCADE)
 	# uploaded_at = models.DateTimeField(auto_now_add=True)
+	def __str__(self):
+		return self.title
 
 class BlogPost(models.Model):
 	post_id= models.AutoField(primary_key=True)
