@@ -3,12 +3,22 @@ import { Link } from "react-router-dom";
 import profilePhoto from "../assets/profile.jpeg";
 import "../style.scss";
 import client from "./axios-config";
+import Cookies from "js-cookie";
+
+function createHeaders() {
+  const token = Cookies.get("csrftoken");
+  return {
+    "X-CSRFToken": token,
+    "Content-Type": "application/json",
+  };
+}
 
 function Profile() {
   const [uploadProfile, setuploadProfile] = useState(profilePhoto);
   const [username, setUsername] = useState(null);
   const [useremail, setUseremail] = useState(null);
   const [posts, setPosts] = useState([]);
+  // const [postId, setpostId] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,20 +34,22 @@ function Profile() {
           `/api/posts/byUser/${userData.user_id}/`
         );
         setPosts(postRes.data);
+        // setpostId(postRes.data.map((post) => post.post_id));
       } catch (error) {
         console.error(error);
-        // Handle errors accordingly
       }
     };
     fetchData();
   }, []);
 
-  const handleDelete = async () => {
+  const handleDelete = async (postIdToDelete) => {
     try {
-      await client.delete(`api/posts/${postId}`, {
+      await client.delete(`api/posts/${postIdToDelete}`, {
         headers: createHeaders(),
       });
-      window;
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post.post_id !== postIdToDelete)
+      );
     } catch (err) {
       console.log(err);
     }
@@ -69,8 +81,13 @@ function Profile() {
               </Link>
             </div>
             <div className="btns">
-              <button className="edit-btn">Edit</button>
-              <button onClick={handleDelete} className="delete-btn">
+              <Link to={`/write?edit=2`} state={post}>
+                <button className="edit-btn">Edit</button>
+              </Link>
+              <button
+                onClick={() => handleDelete(post.post_id)}
+                className="delete-btn"
+              >
                 Delete
               </button>
             </div>
