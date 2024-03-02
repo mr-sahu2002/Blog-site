@@ -105,7 +105,7 @@ class PostListView(generics.RetrieveUpdateDestroyAPIView):
 	lookup_field = 'post_id'
 
 class ImageUploadView(APIView):
-	permission_classes = (permissions.AllowAny,)
+	permission_classes = (permissions.IsAuthenticated,)
 	parser_classes = (MultiPartParser, FormParser)
 
 	def get(self, request, *args, **kwargs):
@@ -123,15 +123,25 @@ class ImageUploadView(APIView):
 			return Response(posts_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetImageView(APIView):
-    def get(self, request, image_id):
-        # Retrieve the YourModel instance based on image_id
-        your_model_instance = get_object_or_404(Image, pk=image_id)
+	permission_classes = (permissions.AllowAny,)
+	def get(self, request, image_id):
+		# Retrieve the YourModel instance based on image_id
+		your_model_instance = get_object_or_404(Image, pk=image_id)
+		image_url = your_model_instance.image.url
 
-        # Assuming the YourModel instance has an 'image' field (ImageField)
-        image_url = your_model_instance.image.url
-
-        # Return the image URL in the response
-        return JsonResponse({'url': image_url})
+		# Return the image URL in the response
+		return JsonResponse({'url': image_url})
+	
+class UserPostsView(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	def get(self, request, author_id):
+		try:
+			# Fetch posts by user ID
+			posts = BlogPost.objects.filter(author_id=author_id)
+			serializer = BlogPostSerializer(posts, many=True)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		except Exception as e:
+			return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 				
 class RatePostView(generics.CreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)

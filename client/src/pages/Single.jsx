@@ -45,16 +45,16 @@ function Single() {
       try {
         const res = await client.get(`api/posts/${postId}`);
         const postData = res.data;
-
-        // Assuming postData has an 'images' property representing the image_id
         const imageId = postData.images;
 
-        // Fetch image URL based on image_id
-        const imageRes = await client.get(`/api/get_image_url/${imageId}`);
-        const imageUrl = imageRes.data.url;
+        if (imageId) {
+          // Fetch image URL based on image_id
+          const imageRes = await client.get(`/api/get_image_url/${imageId}`);
+          const imageUrl = imageRes.data.url;
+          // Add imageUrl to postData
+          postData.images = imageUrl;
+        }
 
-        // Add imageUrl to postData
-        postData.images = imageUrl;
         setPost(postData);
       } catch (err) {
         console.log(err);

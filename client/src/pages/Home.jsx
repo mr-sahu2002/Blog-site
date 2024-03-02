@@ -12,7 +12,23 @@ function Home() {
     const fetchData = async () => {
       try {
         const res = await client.get(`api/posts/${cat}`);
-        setPosts(res.data);
+        const postsData = res.data;
+
+        const postsWithImages = await Promise.all(
+          postsData.map(async (post) => {
+            const imageId = post.images;
+            if (imageId) {
+              // Fetch image URL based on image_id
+              const imageRes = await client.get(
+                `/api/get_image_url/${imageId}`
+              );
+              const imageUrl = imageRes.data.url;
+              post.images = imageUrl;
+            }
+            return post;
+          })
+        );
+        setPosts(postsWithImages);
       } catch (err) {
         console.log(err);
       }
@@ -31,11 +47,7 @@ function Home() {
         {posts.map((post) => (
           <div className="post" key={post.post_id}>
             <div className="img">
-              {/* <img src={`${post.img}`} alt="" /> */}
-              <img
-                src="https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
+              <img src={`http://127.0.0.1:8000${post.images}`} alt="" />
             </div>
             <div className="content">
               <Link className="link" to={`/post/${post.post_id}`}>

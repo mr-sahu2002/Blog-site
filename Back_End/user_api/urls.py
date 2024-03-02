@@ -15,6 +15,7 @@ urlpatterns = [
     
     path('posts/', views.BlogPostListView.as_view(), name='post-detail'),
     path('posts/<int:post_id>/', views.PostListView.as_view(), name='post-detail'),
+    path('posts/byUser/<int:author_id>/', views.UserPostsView.as_view(), name='user_posts'),
     # path('allposts/', views.AllPostListView.as_view(), name='post-list'),
 ]
 
