@@ -11,12 +11,13 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const token = Cookies.get("csrftoken"); // Replace with the actual CSRF token
-
-const headers = {
-  "X-CSRFToken": token,
-  "Content-Type": "application/json",
-};
+function createHeaders() {
+  const token = Cookies.get("csrftoken");
+  return {
+    "X-CSRFToken": token,
+    "Content-Type": "application/json",
+  };
+}
 
 export default client;
-export { headers };
+export { createHeaders };

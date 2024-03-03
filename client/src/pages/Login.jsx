@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import client from "./axios-config";
+import client from "../axios-config";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.scss";
+import "../style/Login.scss";
 
 function Login() {
   const [currentUser, setCurrentUser] = useState();

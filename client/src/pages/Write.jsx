@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
-import client from "./axios-config";
+import client, { createHeaders } from "../axios-config";
 import Cookies from "js-cookie";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react";
-
-function createHeaders() {
-  const token = Cookies.get("csrftoken");
-  return {
-    "X-CSRFToken": token,
-    "Content-Type": "application/json",
-  };
-}
 
 function createHeadersImage() {
   const token = Cookies.get("csrftoken");

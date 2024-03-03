@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import profilePhoto from "../assets/profile.jpeg";
-import "../style.scss";
-import client from "./axios-config";
-import Cookies from "js-cookie";
-
-function createHeaders() {
-  const token = Cookies.get("csrftoken");
-  return {
-    "X-CSRFToken": token,
-    "Content-Type": "application/json",
-  };
-}
+import "../style/style.scss";
+import client, { createHeaders } from "../axios-config";
 
 function Profile() {
   const [uploadProfile, setuploadProfile] = useState(profilePhoto);

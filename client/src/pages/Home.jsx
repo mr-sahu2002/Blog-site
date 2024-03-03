@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import client from "./axios-config";
-import "../style.scss";
+import client from "../axios-config";
+import "../style/style.scss";
 import { Link, useLocation } from "react-router-dom";
 
 function Home() {

@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import client from "../pages/axios-config";
-import "../style.scss";
+import client from "../axios-config";
+import "../style/style.scss";
 
 function Navbar() {
   const [currentUser, setCurrentUser] = useState();

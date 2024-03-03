@@ -3,21 +3,13 @@ import Edit from "../assets/edit.png";
 import Delete from "../assets/delete.png";
 import Menu from "../components/Menu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "../style.scss";
-import client, { headers } from "./axios-config";
-import Cookies from "js-cookie";
+import "../style/style.scss";
+import client, { createHeaders } from "../axios-config";
 import moment from "moment";
+
 // import ReactQuill, { Quill } from "react-quill";
 // import "react-quill/dist/quill.snow.css";
 // import ImageResize from "quill-image-resize-module-react";
-
-function createHeaders() {
-  const token = Cookies.get("csrftoken");
-  return {
-    "X-CSRFToken": token,
-    "Content-Type": "application/json",
-  };
-}
 
 function Single() {
   const [comment, setComment] = useState("");
@@ -115,6 +107,7 @@ function Single() {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
         {/* <ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> */}
+
         <div className="comment-area">
           <input
             className="comment-inp"

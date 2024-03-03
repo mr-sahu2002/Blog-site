@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import client from "./axios-config";
-import "./Register.scss";
+import client from "../axios-config";
+import "../style/Register.scss";
 
 function Register() {
   const [currentUser, setCurrentUser] = useState();
