@@ -5,7 +5,6 @@ import "../style/style.scss";
 import client, { createHeaders } from "../axios-config";
 
 function Profile() {
-  const [uploadProfile, setuploadProfile] = useState(profilePhoto);
   const [username, setUsername] = useState(null);
   const [useremail, setUseremail] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -48,17 +47,6 @@ function Profile() {
 
   return (
     <div className="profile">
-    <label className="pro">
-        <img src={uploadProfile} className="profilePhoto"></img>
-        <input
-          type="file"
-          id="myFile"
-          accept="image/jpeg, image/png, image/jpg"
-          style={{display:"none"}}
-          onChange={(e) => setuploadProfile(e.target.value)}
-        ></input>
-        <div className="blurUp"><p>Upload</p><i class="fa-solid fa-upload" style={{color:'white' , fontSize: '24px'}}></i></div>
-      </label>
       <div className="user-info">
         <h1>{username}</h1>
         <h4>{useremail}</h4>

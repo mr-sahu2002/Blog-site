@@ -161,6 +161,11 @@ class CommentListView(generics.ListAPIView):
 		queryset = comment.objects.filter(post_id=post_id)
 		return queryset
 
+class commentDeleteView(generics.DestroyAPIView):
+    queryset = comment.objects.all()
+    serializer_class = CommentSerializer
+    lookup_field = 'comment_id'
+
 # class AllPostListView(generics.ListAPIView):
 # 	permission_classes = (permissions.AllowAny,)
 # 	queryset = BlogPost.objects.all()

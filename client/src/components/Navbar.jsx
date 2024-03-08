@@ -39,8 +39,8 @@ function Navbar() {
         </div>
 
         <div className="links">
-          <Link className="link" to="/?cat=art">
-            <h6>ART</h6>
+          <Link className="link" to="/?cat=anime">
+            <h6>ANIME</h6>
           </Link>
 
           <Link className="link" to="/?cat=science">

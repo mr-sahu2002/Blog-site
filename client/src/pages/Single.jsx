@@ -103,6 +103,19 @@ function Single() {
     }
   };
 
+  const commentdelete = async (commentId) => {
+    try {
+      await client.delete(`api/comment/${commentId}`, {
+        headers: createHeaders(),
+      });
+      setAllComments((prevComments) =>
+        prevComments.filter((comment) => comment.comment_id !== commentId)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="single">
       <div className="content">
@@ -169,11 +182,16 @@ function Single() {
               <p>{comments.text}</p>
             </div>
 
-            {/* <div className="commentedit">
-              <button className="edit-btn">Edit</button>
-              &nbsp; &nbsp;
-              <button className="delete-btn">Delete</button>
-            </div> */}
+            <div className="commentedit">
+              {currentUser == comments.user_id ? (
+                <button
+                  className="delete-btn"
+                  onClick={() => commentdelete(comments.comment_id)}
+                >
+                  Delete
+                </button>
+              ) : null}
+            </div>
           </div>
         ))}
       </div>

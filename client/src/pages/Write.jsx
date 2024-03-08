@@ -213,13 +213,13 @@ function Write() {
             <div className="cat">
               <input
                 type="radio"
-                checked={cat === "art"}
+                checked={cat === "anime"}
                 name="cat"
-                value="art"
-                id="art"
+                value="anime"
+                id="anime"
                 onChange={(e) => setCat(e.target.value)}
               />
-              <label htmlFor="art">Art</label>
+              <label htmlFor="art">Anime</label>
             </div>
             <div className="cat">
               <input
