@@ -44,10 +44,10 @@ $lightGreen: hsl(180, 49%, 82%);
             padding: 10px;
             border-radius: 10px;
             border: 1px solid white;
-            &:hover{
+            &:hover {
               color: #333;
               background-color: $lightGreen;
-           }
+            }
           }
 
           span {
@@ -57,7 +57,7 @@ $lightGreen: hsl(180, 49%, 82%);
             font-family: "Kode Mono", sans-serif;
           }
 
-          .userId{
+          .userId {
             text-decoration: none;
           }
 
@@ -73,7 +73,7 @@ $lightGreen: hsl(180, 49%, 82%);
             font-weight: 300;
             border: 1px solid white;
 
-            .linkWrite{
+            .linkWrite {
               text-decoration: none;
               font-family: "Lora", sans-serif;
             }
@@ -144,7 +144,7 @@ $lightGreen: hsl(180, 49%, 82%);
           &:nth-child(2n + 1) {
             flex-direction: row-reverse;
           }
-          &:nth-child(2n){
+          &:nth-child(2n) {
             margin-left: 20px;
           }
 
@@ -225,13 +225,13 @@ $lightGreen: hsl(180, 49%, 82%);
         flex-direction: column;
         gap: 30px;
 
-        .post-title{
+        .post-title {
           width: 810px;
           height: 100px;
           word-wrap: break-word;
         }
 
-        .ql-editor{
+        .ql-editor {
           max-width: 810px;
           word-wrap: break-word;
         }
@@ -327,10 +327,10 @@ $lightGreen: hsl(180, 49%, 82%);
           }
         }
       }
-      .comment-area{
+      .comment-area {
         width: 100%;
 
-        input{
+        input {
           width: 100%;
           padding: 10px;
           border: none;
@@ -339,10 +339,10 @@ $lightGreen: hsl(180, 49%, 82%);
           margin-top: 20px;
         }
 
-        button{
+        button {
           margin-top: 20px;
         }
-        .btn-cancel{
+        .btn-cancel {
           padding: 10px;
           border-radius: 10px;
           border: 1px solid teal;
@@ -350,11 +350,11 @@ $lightGreen: hsl(180, 49%, 82%);
           background-color: hsl(0, 0%, 100%);
           cursor: pointer;
 
-          &:active{
+          &:active {
             background-color: hsl(0, 17%, 95%);
           }
         }
-        .btn-submit{
+        .btn-submit {
           margin-left: 15px;
           padding: 10px;
           border-radius: 10px;
@@ -363,10 +363,51 @@ $lightGreen: hsl(180, 49%, 82%);
           color: white;
           background-color: hsl(180, 100%, 25%);
 
-          &:active{
+          &:active {
             background-color: hsl(180, 100%, 35%);
           }
         }
+      }
+
+      .commentContainer {
+        margin-top: 6px;
+        background-color: #d3d3d3e0;
+        display: flex;
+        flex-direction: column;
+        padding: 5px 10px;
+        width: 400px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .commentContainer p {
+        overflow: hidden;
+        word-wrap: break-word;
+        max-width: 100%; 
+        margin: 0;
+      }
+      .commentedit {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+      }
+      .writer {
+        color: #393535d6;
+        font-weight: bolder;
+      }
+      button {
+        padding: 8px 16px;
+        margin: 0;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .edit-btn:hover {
+        background-color: #45a049b7; /* Adjust the color as needed */
+      }
+      .delete-btn:hover {
+        background-color: #cf3f3f96; /* Adjust the color as needed */
       }
     }
 
@@ -389,7 +430,6 @@ $lightGreen: hsl(180, 49%, 82%);
         .editorContainer {
           height: 400px;
           max-width: 1200px;
-          
 
           .editor {
             height: 100%;
@@ -453,22 +493,22 @@ $lightGreen: hsl(180, 49%, 82%);
   }
 }
 
-// profile 
+// profile
 
-.profile{
+.profile {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 150px;
   align-items: center;
 
-  .profilePhoto{
+  .profilePhoto {
     height: 200px;
     width: 200px;
     object-fit: cover;
     border-radius: 50%;
   }
-  .profilePhotoUpload{
+  .profilePhotoUpload {
     padding: 10px;
     background-color: $lightGreen;
     border-radius: 10px;
@@ -476,11 +516,11 @@ $lightGreen: hsl(180, 49%, 82%);
     font-family: "Lora", sans-serif;
     cursor: pointer;
   }
-  #file{
+  #file {
     display: none;
   }
 
-  .user-info{
+  .user-info {
     height: 100px;
     width: fit-content;
     display: flex;
@@ -491,16 +531,16 @@ $lightGreen: hsl(180, 49%, 82%);
     color: #333;
   }
 
-  h1{
+  h1 {
     text-align: center;
     font-family: "Lora", sans-serif;
   }
-  h4{
+  h4 {
     text-align: center;
     font-family: "Lora", sans-serif;
     color: #333;
   }
-  h2{
+  h2 {
     color: teal;
     text-align: center;
     width: fit-content;
@@ -510,20 +550,20 @@ $lightGreen: hsl(180, 49%, 82%);
     border-bottom: 3px solid teal;
   }
 
-  .blogs{
+  .blogs {
     display: flex;
     flex-direction: column;
     gap: 40px;
     width: 100%;
     margin-top: 40px;
 
-    h3{
+    h3 {
       color: #333;
       font-family: "Lora", sans-serif;
       font-size: 24px;
     }
 
-    .post-pro{
+    .post-pro {
       display: flex;
       width: 100%;
       padding: 20px;
@@ -531,23 +571,23 @@ $lightGreen: hsl(180, 49%, 82%);
       align-items: center;
       border-radius: 10px;
       border: 1px solid #333;
-      
-      .post-title{
+
+      .post-title {
         overflow: hidden;
         word-wrap: break-word;
         flex: 4;
         margin-right: 10px;
       }
 
-      .btns{
+      .btns {
         border-left: 1px solid #333;
 
-        button{
+        button {
           padding: 10px;
           margin-left: 10px;
           border-radius: 10px;
         }
-        .edit-btn{
+        .edit-btn {
           background-color: $lightGreen;
           color: #333;
           border: 1px solid white;
@@ -555,11 +595,11 @@ $lightGreen: hsl(180, 49%, 82%);
           width: 62px;
           cursor: pointer;
 
-          &:active{
-            background-color: hsl(180, 49%, 90%)
+          &:active {
+            background-color: hsl(180, 49%, 90%);
           }
         }
-        .delete-btn{
+        .delete-btn {
           background-color: hsl(0, 61%, 59%);
           color: white;
           border: 1px solid white;
@@ -567,7 +607,7 @@ $lightGreen: hsl(180, 49%, 82%);
           width: 62px;
           cursor: pointer;
 
-          &:active{
+          &:active {
             background-color: hsl(0, 61%, 70%);
           }
         }

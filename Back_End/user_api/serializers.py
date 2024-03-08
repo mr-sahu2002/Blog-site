@@ -1,7 +1,7 @@
 from django.forms import ValidationError
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
-from .models import BlogPost, Image, Rating
+from .models import BlogPost, Image, comment
 
 UserModel = get_user_model()
 
@@ -47,9 +47,15 @@ class BlogPostSerializer(serializers.ModelSerializer):
 		representation['author'] = author_representation.get('username', '')
 		return representation
 
-class RatePostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Rating
-        fields = ['rate_id', 'post', 'reader', 'like','comment']
+class CommentSerializer(serializers.ModelSerializer):
+	class Meta:
+		model= comment
+		fields=['comment_id','user_id','post_id', 'created_at','text']
+	
+	def to_representation(self, instance):
+		representation = super().to_representation(instance)
+		author_representation = UserSerializer(instance.user_id).data
+		representation['user_id'] = author_representation.get('username', '')
+		return representation
 
 

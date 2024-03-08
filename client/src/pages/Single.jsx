@@ -13,7 +13,9 @@ import moment from "moment";
 
 function Single() {
   const [comment, setComment] = useState("");
+  const [allcomments, setAllComments] = useState([]);
   const [currentUser, setCurrentUser] = useState();
+  const [currentUserID, setCurrentUserID] = useState();
   const [post, setPost] = useState({});
 
   const location = useLocation();
@@ -26,10 +28,23 @@ function Single() {
       .get("/api/user")
       .then(function (res) {
         setCurrentUser(res.data.user.username);
+        setCurrentUserID(res.data.user.user_id);
       })
       .catch(function (error) {
         setCurrentUser(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await client.get(`api/post/${postId}/comments`);
+        setAllComments(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -71,7 +86,23 @@ function Single() {
   const handleCancel = () => {
     setComment("");
   };
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    try {
+      const response = await client.post(
+        "api/comment/",
+        {
+          user_id: currentUserID,
+          post_id: postId,
+          text: comment,
+        },
+        { headers: createHeaders() }
+      );
+      setAllComments((prevComments) => [...prevComments, response.data]);
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="single">
@@ -106,25 +137,46 @@ function Single() {
           className="ql-editor"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-        {/* <ReactQuill value={post.content} readOnly={true} theme={"bubble"} /> */}
 
-        <div className="comment-area">
-          <input
-            className="comment-inp"
-            type="textarea"
-            placeholder="leave a comment"
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
-          ></input>
-          <button className="btn-cancel" onClick={handleCancel}>
-            Cancel
-          </button>
-          <button className="btn-submit" onClick={handleSubmit}>
-            Submit
-          </button>
-        </div>
+        {currentUser ? (
+          <div className="comment-area">
+            <input
+              className="comment-inp"
+              type="textarea"
+              placeholder="leave a comment"
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+            ></input>
+            <button className="btn-cancel" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button className="btn-submit" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
+        ) : (
+          <div className="comment-area">
+            <p>please log in to view & write comment</p>
+            <Link to="/login">
+              <p>login</p>
+            </Link>
+          </div>
+        )}
+        {allcomments.map((comments) => (
+          <div className="commentContainer" key={comments.comment_id}>
+            <div>
+              <p className="writer">{comments.user_id}</p>
+              <p>{comments.text}</p>
+            </div>
+
+            {/* <div className="commentedit">
+              <button className="edit-btn">Edit</button>
+              &nbsp; &nbsp;
+              <button className="delete-btn">Delete</button>
+            </div> */}
+          </div>
+        ))}
       </div>
-      <Menu />
     </div>
   );
 }

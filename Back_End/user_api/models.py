@@ -87,15 +87,17 @@ class BlogPost(models.Model):
 	def __str__(self):
 		return self.title
 
-class Rating(models.Model):
-	rate_id = models.AutoField(primary_key=True)
-	post = models.ForeignKey(BlogPost,on_delete=models.CASCADE)
-	reader = models.ForeignKey(AppUser, on_delete=models.CASCADE)
-	like = models.BooleanField()
-	comment = models.TextField()
+class comment(models.Model):
+	comment_id = models.AutoField(primary_key=True)
+	post_id = models.ForeignKey(BlogPost,on_delete=models.CASCADE)
+	user_id = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	created_at = models.DateTimeField(auto_now_add=True)
+	text = models.TextField()
 
 	def __str__(self):
 		return self.post,self.reader
+
+
 
 # class Analytics(models.Model):
 # 	analysis_id = models.AutoField(primary_key=True)

@@ -1,20 +1,16 @@
 from django.contrib.auth import get_user_model, login, logout
-
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, status
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
-# from django.conf import settings
-# from django.core.files.base import ContentFile
 
-from .models import BlogPost,Image,Rating
-
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer, RatePostSerializer, ImageSerializer
+from .models import BlogPost,Image,comment 
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer,BlogPostSerializer, CommentSerializer, ImageSerializer
 from .validations import custom_validation, validate_email, validate_password
 
 
@@ -143,9 +139,27 @@ class UserPostsView(APIView):
 		except Exception as e:
 			return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 				
-class RatePostView(generics.CreateAPIView):
-	permission_classes = (permissions.IsAuthenticated,)
-	serializer_class = RatePostSerializer
+class CommentCreateView(generics.CreateAPIView):
+	queryset = comment.objects.all()
+	serializer_class = CommentSerializer
+	permission_classes = [permissions.IsAuthenticated]
+
+	def perform_create(self, serializer):
+		username = self.request.user.username
+		reader_instance = get_user_model().objects.get(username=username)
+		serializer.save(user_id=reader_instance)
+
+class CommentListView(generics.ListAPIView):
+	permission_classes = (permissions.AllowAny,)
+	serializer_class = CommentSerializer
+
+	def get_queryset(self):
+		# Get the post_id from the URL parameters
+		post_id = self.kwargs.get('post_id')
+		
+		# Filter comments based on the associated blog post
+		queryset = comment.objects.filter(post_id=post_id)
+		return queryset
 
 # class AllPostListView(generics.ListAPIView):
 # 	permission_classes = (permissions.AllowAny,)
