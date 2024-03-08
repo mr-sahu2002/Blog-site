@@ -35,7 +35,7 @@ function Login() {
         setCurrentUser(true);
       })
       .catch(function (error) {
-        setError("*password is not matching for the email");
+        setError("Password is not matching for the email");
       });
   }
 
@@ -60,7 +60,7 @@ function Login() {
             required
           />
           <i className="bx bxs-lock-alt sec"></i>
-          {error && <p style={{ color: "#000000" }}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <button type="submit">Login</button>
           <div className="linkto">
             <label>Don't have an account? </label>
