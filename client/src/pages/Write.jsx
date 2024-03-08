@@ -91,7 +91,7 @@ function Write() {
               title,
               content: value,
               cat,
-              images: formData.image ? imageID : "",
+              images: formData.image ? imageID : formData.image_id,
             },
             { headers: createHeaders() }
           )
@@ -160,7 +160,7 @@ function Write() {
 
         <div className="menu">
           <div className="item">
-          <div className="imageDesc">
+            <div className="imageDesc">
               <form onSubmit={upload}>
                 <p>
                   <input
@@ -179,17 +179,32 @@ function Write() {
                     accept="image/png, image/jpeg"
                     onChange={handleImageChange}
                     required
-                    style={{display:"none"}}
+                    style={{ display: "none" }}
                   />
-                  <label htmlFor="image" className="Btn btn-slide">Select Image</label>
+                  <label htmlFor="image" className="Btn btn-slide">
+                    Select Image
+                  </label>
                 </p>
-                <input type="submit" value="Upload" className="imageUploadBtn btn-slide"/>
+                <div>
+                  {imageID ? (
+                    <p style={{ color: "green", fontSize: "20px" }}>
+                      image upload successfully!
+                    </p>
+                  ) : null}
+                </div>
+                <input
+                  type="submit"
+                  value="Upload"
+                  className="imageUploadBtn btn-slide"
+                />
               </form>
             </div>
 
             <div className="buttons">
               &nbsp;&nbsp;
-              <button onClick={post} className="Btn btn-slide btn-active">Publish</button>
+              <button onClick={post} className="Btn btn-slide btn-active">
+                Publish
+              </button>
             </div>
           </div>
 

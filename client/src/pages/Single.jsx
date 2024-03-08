@@ -106,12 +106,15 @@ function Single() {
   return (
     <div className="single">
       <div className="content">
+        <div className="post-title">
+          <h1>{post.title}</h1>
+        </div>
         <img src={`http://127.0.0.1:8000${post.images}`} alt="" />
         <div className="user">
-          <img
+          {/* <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYxsG3Ac8-CCLG3PzEvZXAfVoQxmjHleJqjg&usqp=CAU"
             alt=""
-          />
+          /> */}
           <div className="info">
             <span>{post.author}</span>
             <p>{moment(post.created_at).fromNow()}</p>
@@ -129,9 +132,7 @@ function Single() {
             ) : null}
           </div>
         </div>
-        <div className="post-title">
-          <h1>{post.title}</h1>
-        </div>
+
         <div
           className="ql-editor"
           dangerouslySetInnerHTML={{ __html: post.content }}
