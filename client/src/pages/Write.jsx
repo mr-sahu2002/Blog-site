@@ -160,41 +160,36 @@ function Write() {
 
         <div className="menu">
           <div className="item">
-            <h1>Publish</h1>
-            <span>
-              <b>Status: </b> Draft
-            </span>
-            <span>
-              <b>Visibility: </b> Public
-            </span>
-
-            <form onSubmit={upload}>
-              <p>
-                <input
-                  type="file"
-                  id="image"
-                  accept="image/png, image/jpeg"
-                  onChange={handleImageChange}
-                  required
-                />
-              </p>
-              <p>
-                <input
-                  type="text"
-                  placeholder="Title"
-                  id="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  required
-                />
-              </p>
-              <input type="submit" value="upload" />
-            </form>
+          <div className="imageDesc">
+              <form onSubmit={upload}>
+                <p>
+                  <input
+                    type="text"
+                    placeholder="Image Title"
+                    id="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </p>
+                <p>
+                  <input
+                    type="file"
+                    id="image"
+                    accept="image/png, image/jpeg"
+                    onChange={handleImageChange}
+                    required
+                    style={{display:"none"}}
+                  />
+                  <label htmlFor="image" className="Btn btn-slide">Select Image</label>
+                </p>
+                <input type="submit" value="Upload" className="imageUploadBtn btn-slide"/>
+              </form>
+            </div>
 
             <div className="buttons">
-              <button>Save as a draft</button>
               &nbsp;&nbsp;
-              <button onClick={post}>Publish</button>
+              <button onClick={post} className="Btn btn-slide btn-active">Publish</button>
             </div>
           </div>
 

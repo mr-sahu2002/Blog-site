@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Edit from "../assets/edit.png";
 import Delete from "../assets/delete.png";
-import Menu from "../components/Menu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../style/style.scss";
 import client, { createHeaders } from "../axios-config";
@@ -124,7 +123,6 @@ function Single() {
           </button>
         </div>
       </div>
-      <Menu />
     </div>
   );
 }

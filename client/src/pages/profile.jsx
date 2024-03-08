@@ -48,16 +48,17 @@ function Profile() {
 
   return (
     <div className="profile">
-      <img src={uploadProfile} className="profilePhoto"></img>
-      <label htmlFor="file" className="profilePhotoUpload">
-        Update Profile Photo
+    <label className="pro">
+        <img src={uploadProfile} className="profilePhoto"></img>
+        <input
+          type="file"
+          id="myFile"
+          accept="image/jpeg, image/png, image/jpg"
+          style={{display:"none"}}
+          onChange={(e) => setuploadProfile(e.target.value)}
+        ></input>
+        <div className="blurUp"><p>Upload</p><i class="fa-solid fa-upload" style={{color:'white' , fontSize: '24px'}}></i></div>
       </label>
-      <input
-        type="file"
-        id="file"
-        accept="image/jpeg, image/png, image/jpg"
-        onChange={(e) => setuploadProfile(e.target.value)}
-      ></input>
       <div className="user-info">
         <h1>{username}</h1>
         <h4>{useremail}</h4>
