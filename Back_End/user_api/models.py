@@ -68,8 +68,7 @@ class Image(models.Model):
 	image_id=models.AutoField(primary_key=True)
 	title = models.CharField(max_length=100, null=True)
 	image = models.ImageField(upload_to='posts/',default="")
-	# uploaded_by = models.ForeignKey(AppUser, on_delete=models.CASCADE)
-	# uploaded_at = models.DateTimeField(auto_now_add=True)
+	
 	def __str__(self):
 		return self.title
 
@@ -96,14 +95,3 @@ class comment(models.Model):
 
 	def __str__(self):
 		return self.post,self.reader
-
-
-
-# class Analytics(models.Model):
-# 	analysis_id = models.AutoField(primary_key=True)
-# 	post=models.ForeignKey(BlogPost, on_delete=models.CASCADE)
-# 	reader_count = models.IntegerField()
-# 	timestamp = models.TimeField()
-
-# 	def __str__(self):
-# 		return self.analysis_id

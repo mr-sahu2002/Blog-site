@@ -246,7 +246,7 @@ $lightGreen: hsl(180, 49%, 82%);
             text-transform: uppercase;
           }
         }
-
+        
         img {
           width: 100%;
           height: 500px;
@@ -280,7 +280,7 @@ $lightGreen: hsl(180, 49%, 82%);
             cursor: pointer;
           }
         }
-
+        
         h1 {
           font-size: 42px;
           color: #333;
@@ -292,6 +292,13 @@ $lightGreen: hsl(180, 49%, 82%);
           line-height: 30px;
           font-family: "Lora", sans-serif;
         }
+      }
+
+      .summary p{
+        max-width: 810px;
+        overflow: hidden;
+        word-wrap: break-word;
+        justify-content: center;
       }
       .menu {
         flex: 2;

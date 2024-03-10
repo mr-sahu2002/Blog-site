@@ -1,3 +1,4 @@
+import OpenAI from "openai";
 import React, { useEffect, useState } from "react";
 import Edit from "../assets/edit.png";
 import Delete from "../assets/delete.png";
@@ -16,6 +17,8 @@ function Single() {
   const [currentUser, setCurrentUser] = useState();
   const [currentUserID, setCurrentUserID] = useState();
   const [post, setPost] = useState({});
+  const [summarizedtext, setsummarizedtext] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -116,6 +119,35 @@ function Single() {
     }
   };
 
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
+
+  const openai = new OpenAI({
+    apiKey: "<enter your api key>",
+    dangerouslyAllowBrowser: true,
+  });
+  const text = getText(post.content);
+
+  const HandleSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "You are a assistant designed to summaries",
+        },
+        { role: "user", content: text },
+      ],
+      model: "gpt-3.5-turbo-0125",
+      response_format: { type: "text" },
+    });
+    setsummarizedtext(completion.choices[0].message.content);
+    setLoading(false);
+  };
+
   return (
     <div className="single">
       <div className="content">
@@ -144,12 +176,20 @@ function Single() {
               <img onClick={handleDelete} src={Delete} alt="Delete" />
             ) : null}
           </div>
+
+          <button type="button" onClick={HandleSubmit}>
+            {loading ? "loading..." : "Summarize"}
+          </button>
         </div>
 
         <div
           className="ql-editor"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+        <div className="summary">
+          {summarizedtext ? <h2>Summary:</h2> : null}
+          <p>{summarizedtext}</p>
+        </div>
 
         {currentUser ? (
           <div className="comment-area">
