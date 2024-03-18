@@ -125,7 +125,7 @@ function Single() {
   };
 
   const openai = new OpenAI({
-    apiKey: "<enter your api key>",
+    apiKey: "your api key",
     dangerouslyAllowBrowser: true,
   });
   const text = getText(post.content);
